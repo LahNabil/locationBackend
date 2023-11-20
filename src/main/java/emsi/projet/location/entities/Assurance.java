@@ -3,12 +3,16 @@ package emsi.projet.location.entities;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
+
 
 @Entity
 public class Assurance {
 	
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	private String nom;
 	private int prix;
@@ -16,9 +20,8 @@ public class Assurance {
 	private Date date_debut;
 	private Date date_fin;
 	
-	@OneToOne
-    @JoinColumn(name = "voiture_id", unique = true)
-    private Voiture voiture;
+	
+	
 	
 	public int getId() {
 		return id;

@@ -2,10 +2,12 @@ package emsi.projet.location.entities;
 
 import java.util.Date;
 
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -24,7 +26,8 @@ public class Voiture {
 	private String carburant;
 	private Date date;
 	
-	@OneToOne(mappedBy = "voiture")
+	@OneToOne(cascade = CascadeType.ALL) 
+    @JoinColumn(name = "assurance_id", unique = true)
 	private Assurance assurance;
 	
 	public int getId() {
@@ -81,6 +84,13 @@ public class Voiture {
 	public void setDate(Date date) {
 		this.date = date;
 	}
+	public Assurance getAssurance() {
+		return assurance;
+	}
+	public void setAssurance(Assurance assurance) {
+		this.assurance = assurance;
+	}
+	
 	
 	
 	
