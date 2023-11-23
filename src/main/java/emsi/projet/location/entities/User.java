@@ -34,4 +34,12 @@ public class User {
 
     @Column(nullable = false)
     private String password;
+    
+    private String cin;
+    private String email;
+    private Boolean genre;
+    private String permis;
+    private String telephone;
+    private String ville;
+    
 }
