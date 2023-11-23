@@ -26,6 +26,8 @@ public class Agence {
 	@OneToMany
 	private List<Voiture> voitures = new ArrayList<>();
 	
+	
+	
 	public int getId() {
 		return id;
 	}

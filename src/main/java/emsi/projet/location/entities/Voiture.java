@@ -35,6 +35,14 @@ public class Voiture {
 	@JoinColumn(name="agence_id")
 	private Agence agence;
 	
+	
+	
+	public Agence getAgence() {
+		return agence;
+	}
+	public void setAgence(Agence agence) {
+		this.agence = agence;
+	}
 	public int getId() {
 		return id;
 	}

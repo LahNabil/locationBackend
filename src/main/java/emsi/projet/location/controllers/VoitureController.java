@@ -15,7 +15,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import emsi.projet.location.entities.Agence;
 import emsi.projet.location.entities.Voiture;
+import emsi.projet.location.repository.AgenceRepository;
 import emsi.projet.location.repository.VoitureRepository;
 
 @RestController
@@ -24,6 +26,9 @@ public class VoitureController {
 
 	@Autowired
 	private VoitureRepository voitureRepository;
+	
+	@Autowired
+    private AgenceRepository agenceRepository;
 	
 	@GetMapping
     public ResponseEntity<List<Voiture>> getAllVoitures() {
@@ -83,4 +88,28 @@ public class VoitureController {
             return ResponseEntity.notFound().build();
         }
     }
+    
+    @PostMapping("/affecter/{voitureId}/{agenceId}")
+    public ResponseEntity<String> affecterVoitureAgence(@PathVariable("voitureId") int voitureId, @PathVariable("agenceId") int agenceId) {
+        Optional<Voiture> optionalVoiture = voitureRepository.findById(voitureId);
+        Optional<Agence> optionalAgence = agenceRepository.findById(agenceId);
+
+        if (optionalVoiture.isPresent() && optionalAgence.isPresent()) {
+            Agence agence = optionalAgence.get();
+            Voiture voiture = optionalVoiture.get();
+
+            // Set the agence on the voiture
+            voiture.setAgence(agence);
+
+            // Save the updated voiture back to the database (if needed)
+            agence.setNbrV(agence.getNbrV()+1);
+            voitureRepository.save(voiture);
+
+            return new ResponseEntity<>("Voiture affectée à l'agence avec succès", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Voiture ou Agence non trouvée", HttpStatus.NOT_FOUND);
+    }
+
+    
 }
