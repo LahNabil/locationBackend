@@ -8,6 +8,7 @@ import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 
 @Entity
@@ -29,6 +30,10 @@ public class Voiture {
 	@OneToOne(cascade = CascadeType.ALL) 
     @JoinColumn(name = "assurance_id", unique = true)
 	private Assurance assurance;
+	
+	@ManyToOne
+	@JoinColumn(name="agence_id")
+	private Agence agence;
 	
 	public int getId() {
 		return id;
