@@ -1,5 +1,6 @@
 package emsi.projet.location.entities;
 
+
 import java.util.Date;
 
 import jakarta.persistence.CascadeType;
@@ -10,6 +11,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Voiture {
@@ -25,7 +27,11 @@ public class Voiture {
 	private boolean dispo;
 	private String couleur;
 	private String carburant;
+	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date date;
+	private String photo;
+	
+	
 	
 	@OneToOne(cascade = CascadeType.ALL) 
     @JoinColumn(name = "assurance_id", unique = true)
@@ -42,6 +48,12 @@ public class Voiture {
 	}
 	public void setAgence(Agence agence) {
 		this.agence = agence;
+	}
+	public String getPhoto() {
+		return photo;
+	}
+	public void setPhoto(String photo) {
+		this.photo = photo;
 	}
 	public int getId() {
 		return id;
