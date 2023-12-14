@@ -3,7 +3,10 @@ package emsi.projet.location.entities;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -11,7 +14,6 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import com.fasterxml.jackson.annotation.JsonFormat;
 
 @Entity
 public class Voiture {
@@ -20,15 +22,24 @@ public class Voiture {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
+	@Column(unique = false)
 	private String matricule;
+	@Column(nullable  = true)
 	private String marque;
+	@Column(nullable  = true)
 	private String modele;
+	@Column(nullable  = true)
 	private int prix;
+	
+	@Column(nullable  = true)
 	private boolean dispo;
+	@Column(nullable  = true)
 	private String couleur;
+	
 	private String carburant;
 	@JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date date;
+	@Column(nullable = true)
 	private String photo;
 	
 	
