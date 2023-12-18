@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import emsi.projet.location.entities.Agence;
+import emsi.projet.location.entities.Assurance;
 import emsi.projet.location.repository.AgenceRepository;
 
 @RestController
@@ -29,6 +30,17 @@ public class AgenceController {
 	public ResponseEntity<List<Agence>> afficherAgence(){
 		List<Agence> agences = agenceRepository.findAll();
 		return new ResponseEntity<>(agences, HttpStatus.OK);
+	}
+	@GetMapping("/{id}")
+	public ResponseEntity<Agence> getAgenceById(@PathVariable int id) {
+	    Optional<Agence> optionalAgence = agenceRepository.findById(id);
+
+	    if (optionalAgence.isPresent()) {
+	        Agence a = optionalAgence.get();
+	        return ResponseEntity.ok(a);
+	    } else {
+	        return ResponseEntity.notFound().build();
+	    }
 	}
 	
 	@PostMapping("/add")
