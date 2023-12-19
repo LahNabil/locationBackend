@@ -17,8 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import emsi.projet.location.entities.Agence;
+import emsi.projet.location.entities.Assurance;
 import emsi.projet.location.entities.Voiture;
 import emsi.projet.location.repository.AgenceRepository;
+import emsi.projet.location.repository.AssuranceRepository;
 import emsi.projet.location.repository.VoitureRepository;
 
 @RestController
@@ -31,6 +33,9 @@ public class VoitureController {
 	
 	@Autowired
     private AgenceRepository agenceRepository;
+	
+	@Autowired
+	private AssuranceRepository assuranceRepository;
 	
 	@GetMapping
     public ResponseEntity<List<Voiture>> getAllVoitures() {
@@ -51,7 +56,11 @@ public class VoitureController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Voiture> createVoiture(@RequestBody Voiture voiture) {
+    public ResponseEntity<Voiture> createVoiture(@RequestBody Voiture voiture) throws Exception {
+    	Assurance assurance = assuranceRepository.findById(voiture.getAssurance().getId()).orElseThrow(()-> new Exception("invalid Id"));
+    	Agence agence = agenceRepository.findById(voiture.getAgence().getId()).orElseThrow(()-> new Exception("Invalid Id"));
+    	voiture.setAgence(agence);
+    	voiture.setAssurance(assurance);
         Voiture v = voitureRepository.save(voiture);
         return new ResponseEntity<>(v, HttpStatus.CREATED);
     }
@@ -84,6 +93,8 @@ public class VoitureController {
             existingVoiture.setCarburant(updatedVoiture.getCarburant());
             existingVoiture.setDate(updatedVoiture.getDate());
             existingVoiture.setPhoto(updatedVoiture.getPhoto());
+            existingVoiture.setAgence(updatedVoiture.getAgence());
+            existingVoiture.setAssurance(updatedVoiture.getAssurance());
             // Enregistrez les modifications dans la base de données
             voitureRepository.save(existingVoiture);
             return ResponseEntity.ok(existingVoiture);
@@ -92,7 +103,7 @@ public class VoitureController {
         }
     }
     
-    @PostMapping("/affecter/{voitureId}/{agenceId}")
+    @PostMapping("/affecterAg/{voitureId}/{agenceId}")
     public ResponseEntity<String> affecterVoitureAgence(@PathVariable("voitureId") int voitureId, @PathVariable("agenceId") int agenceId) {
         Optional<Voiture> optionalVoiture = voitureRepository.findById(voitureId);
         Optional<Agence> optionalAgence = agenceRepository.findById(agenceId);
@@ -112,6 +123,25 @@ public class VoitureController {
         }
 
         return new ResponseEntity<>("Voiture ou Agence non trouvée", HttpStatus.NOT_FOUND);
+    }
+    @PostMapping("/affecterAss/{voitureId}/{assuranceId}")
+    public ResponseEntity<String> affecterVoitureAssurance(@PathVariable("voitureId") int voitureId, @PathVariable("assuranceId") int assuranceId) {
+        Optional<Voiture> optionalVoiture = voitureRepository.findById(voitureId);
+        Optional<Assurance> optionalAssurance = assuranceRepository.findById(assuranceId);
+
+        if (optionalVoiture.isPresent() && optionalAssurance.isPresent()) {
+            Assurance assurance = optionalAssurance.get();
+            Voiture voiture = optionalVoiture.get();
+
+            // Set the agence on the voiture
+            voiture.setAssurance(assurance);
+         
+            voitureRepository.save(voiture);
+
+            return new ResponseEntity<>("Voiture affectée à l'assurance avec succès", HttpStatus.OK);
+        }
+
+        return new ResponseEntity<>("Voiture ou Assurance non trouvée", HttpStatus.NOT_FOUND);
     }
 
     
