@@ -49,7 +49,7 @@ public class Voiture {
 	private Assurance assurance;
 	
 	@ManyToOne
-	@JoinColumn(name="agence_id")
+	@JoinColumn(name="agence_id", unique = false)
 	private Agence agence;
 	
 	

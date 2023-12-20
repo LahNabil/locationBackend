@@ -78,12 +78,11 @@ public class VoitureController {
     }
 
     @PutMapping("/edit/{id}")
-    public ResponseEntity<Voiture> editVoiture(@PathVariable int id, @RequestBody Voiture updatedVoiture) {
+    public ResponseEntity<Voiture> editVoiture(@PathVariable int id, @RequestBody Voiture updatedVoiture) throws Exception {
         Optional<Voiture> optionalVoiture = voitureRepository.findById(id);
 
         if (optionalVoiture.isPresent()) {
             Voiture existingVoiture = optionalVoiture.get();
-            // Mettez à jour les propriétés de la voiture existante avec les nouvelles valeurs
             existingVoiture.setMatricule(updatedVoiture.getMatricule());
             existingVoiture.setMarque(updatedVoiture.getMarque());
             existingVoiture.setModele(updatedVoiture.getModele());
@@ -93,8 +92,10 @@ public class VoitureController {
             existingVoiture.setCarburant(updatedVoiture.getCarburant());
             existingVoiture.setDate(updatedVoiture.getDate());
             existingVoiture.setPhoto(updatedVoiture.getPhoto());
-            existingVoiture.setAgence(updatedVoiture.getAgence());
-            existingVoiture.setAssurance(updatedVoiture.getAssurance());
+            Assurance assurance = assuranceRepository.findById(updatedVoiture.getAssurance().getId()).orElseThrow(()-> new Exception("invalid Id"));
+        	Agence agence = agenceRepository.findById(updatedVoiture.getAgence().getId()).orElseThrow(()-> new Exception("Invalid Id"));
+            existingVoiture.setAgence(agence);
+            existingVoiture.setAssurance(assurance);
             // Enregistrez les modifications dans la base de données
             voitureRepository.save(existingVoiture);
             return ResponseEntity.ok(existingVoiture);
