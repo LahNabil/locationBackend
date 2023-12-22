@@ -45,11 +45,11 @@ public class Voiture {
 	
 	
 	@OneToOne(cascade = CascadeType.ALL) 
-    @JoinColumn(name = "assurance_id", unique = true)
+    @JoinColumn(name = "assurance_id", unique = false, nullable = true)
 	private Assurance assurance;
 	
 	@ManyToOne
-	@JoinColumn(name="agence_id", unique = false)
+	@JoinColumn(name="agence_id", unique = false, nullable = true)
 	private Agence agence;
 	
 	

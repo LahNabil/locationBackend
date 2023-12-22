@@ -22,6 +22,7 @@ import emsi.projet.location.entities.Voiture;
 import emsi.projet.location.repository.AgenceRepository;
 import emsi.projet.location.repository.AssuranceRepository;
 import emsi.projet.location.repository.VoitureRepository;
+import emsi.projet.location.services.VoitureService;
 
 @RestController
 @RequestMapping("/voitures")
@@ -36,6 +37,9 @@ public class VoitureController {
 	
 	@Autowired
 	private AssuranceRepository assuranceRepository;
+	
+	@Autowired
+	private VoitureService voitureService;
 	
 	@GetMapping
     public ResponseEntity<List<Voiture>> getAllVoitures() {
@@ -56,13 +60,10 @@ public class VoitureController {
     }
 
     @PostMapping("/add")
-    public ResponseEntity<Voiture> createVoiture(@RequestBody Voiture voiture) throws Exception {
-    	Assurance assurance = assuranceRepository.findById(voiture.getAssurance().getId()).orElseThrow(()-> new Exception("invalid Id"));
-    	Agence agence = agenceRepository.findById(voiture.getAgence().getId()).orElseThrow(()-> new Exception("Invalid Id"));
-    	voiture.setAgence(agence);
-    	voiture.setAssurance(assurance);
-        Voiture v = voitureRepository.save(voiture);
-        return new ResponseEntity<>(v, HttpStatus.CREATED);
+    public Voiture createVoiture(@RequestBody Voiture voiture) {
+    	return voitureService.createVoiture(voiture);
+    	
+        
     }
 
     @DeleteMapping("/delete/{id}")
