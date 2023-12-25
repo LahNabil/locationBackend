@@ -15,6 +15,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
 import emsi.projet.location.dto.UserDto;
+import emsi.projet.location.entities.User;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
 
@@ -30,15 +31,15 @@ public class UserAuthProvider {
 		secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
 	}
 	
-	public String createToken(UserDto dto) {
+	public String createToken(User user) {
 		Date now = new Date();
 		Date validity = new Date(now.getTime() + 3600000);
 		return JWT.create()
-				.withIssuer(dto.getLogin())
+				.withIssuer(user.getLogin())
 				.withIssuedAt(now)
 				.withIssuedAt(validity)
-				.withClaim("firstName", dto.getFirstName())
-				.withClaim("lastName", dto.getLastName())
+				.withClaim("firstName", user.getFirstName())
+				.withClaim("lastName", user.getLastName())
 				.sign(Algorithm.HMAC256(secretKey));
 	}
 	
