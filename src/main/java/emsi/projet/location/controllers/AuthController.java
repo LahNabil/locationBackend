@@ -3,6 +3,7 @@ package emsi.projet.location.controllers;
 
 import java.net.URI;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -12,9 +13,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
+
 import emsi.projet.location.config.UserAuthProvider;
+import emsi.projet.location.dto.CredentialsDto;
+import emsi.projet.location.dto.LoginDto;
+import emsi.projet.location.dto.UserDto;
 import emsi.projet.location.entities.User;
-import emsi.projet.location.entities.Voiture;
+import emsi.projet.location.repository.UserRepository;
 import emsi.projet.location.services.UserService;
 import lombok.RequiredArgsConstructor;
 
@@ -26,18 +31,25 @@ public class AuthController {
 	
 	private final UserService userService;
 	private final UserAuthProvider userAuthProvider;
+	private final UserRepository userRepository;
 	
 	
-	
-	/*
-	 * @PostMapping("/login")
-	 
-	public ResponseEntity<UserDto> login(@RequestBody CredentialsDto credentialsDto){
-		UserDto user = userService.login(credentialsDto);
-		user.setToken(userAuthProvider.createToken(user));
-		return ResponseEntity.ok(user);
+	@PostMapping("/login")
+	public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto) {
+	    try {
+	        System.out.println(loginDto.getLogin() + loginDto.getPassword());
+	        User user = userRepository.findByLogin(loginDto.getLogin())
+	                .orElseThrow(() -> new Exception("Utilisateur non trouvé"));
+
+	        user.setToken(userAuthProvider.createToken(user));
+	        return ResponseEntity.ok(user);
+	    } catch (Exception e) {
+	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");
+	    }
 	}
-	*/
+
+	
+	
 	
 	@GetMapping("/")
 	public ResponseEntity<List<User>> afficher(){

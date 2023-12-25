@@ -6,9 +6,11 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 
 import emsi.projet.location.dto.CredentialsDto;
 import emsi.projet.location.dto.SignUpDto;
@@ -30,15 +32,20 @@ public class UserService {
 		@Autowired
 	    private final PasswordEncoder passwordEncoder;
 
-	    public UserDto login(CredentialsDto credentialsDto) {
-	        User user = userRepository.findByLogin(credentialsDto.login())
-	                .orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+		//public User login(String login, String password) {
+		   // var user = userRepository.findByLogin(login).orElseThrow();
+		   // return user;
 
-	        if (passwordEncoder.matches(CharBuffer.wrap(credentialsDto.password()), user.getPassword())) {
-	            return userMapper.toUserDto(user);
-	        }
-	        throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
-	    }
+		    //return optionalUser.map(user -> {
+		        //if (passwordEncoder.matches(CharBuffer.wrap(password), user.getPassword())) {
+		           // return user;
+		        //} else {
+		           // throw new AppException("Invalid password", HttpStatus.BAD_REQUEST);
+		        //}
+		    //}).orElseThrow(() -> new AppException("Unknown user", HttpStatus.NOT_FOUND));
+		//}
+	
+	    
 	    public User register(User user) {
 	        Optional<User> optionalUser = userRepository.findByLogin(user.getLogin());
 
