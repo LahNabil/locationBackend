@@ -8,7 +8,9 @@ import java.util.Optional;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -19,6 +21,7 @@ import emsi.projet.location.dto.CredentialsDto;
 import emsi.projet.location.dto.LoginDto;
 import emsi.projet.location.dto.UserDto;
 import emsi.projet.location.entities.User;
+import emsi.projet.location.entities.Voiture;
 import emsi.projet.location.repository.UserRepository;
 import emsi.projet.location.services.UserService;
 import lombok.RequiredArgsConstructor;
@@ -34,6 +37,10 @@ public class AuthController {
 	private final UserRepository userRepository;
 	
 	
+	
+	
+	
+	
 	@PostMapping("/login")
 	public ResponseEntity<?> authenticate(@RequestBody LoginDto loginDto) {
 	    try {
@@ -46,6 +53,14 @@ public class AuthController {
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");
 	    }
+	}
+	
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Void> deleteUser(@PathVariable Long id){
+		 userService.deleteByid(id);
+	     return ResponseEntity.noContent().build();
+	        
+	            
 	}
 
 	

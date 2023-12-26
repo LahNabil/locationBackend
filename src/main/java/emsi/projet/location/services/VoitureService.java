@@ -45,7 +45,7 @@ public class VoitureService {
 	        return new ResponseEntity<>(v, HttpStatus.CREATED);
 	    }
 	    */
-	 @PostMapping("/add")
+	
 	    public Voiture createVoiture(@RequestBody Voiture voiture) {
 	    	Optional<Assurance> assurance = assuranceRepository.findById(voiture.getAssurance().getId());
 	    	if(assurance.isEmpty()) {
