@@ -2,8 +2,8 @@ package emsi.projet.location.controllers;
 
 
 import java.net.URI;
+import java.time.LocalDateTime;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +15,13 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RestController;
 
-
 import emsi.projet.location.config.UserAuthProvider;
-import emsi.projet.location.dto.CredentialsDto;
 import emsi.projet.location.dto.LoginDto;
-import emsi.projet.location.dto.UserDto;
 import emsi.projet.location.entities.User;
-import emsi.projet.location.entities.Voiture;
+import emsi.projet.location.entities.UserSession;
 import emsi.projet.location.repository.UserRepository;
 import emsi.projet.location.services.UserService;
+import emsi.projet.location.services.UserSessionService;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -35,6 +33,7 @@ public class AuthController {
 	private final UserService userService;
 	private final UserAuthProvider userAuthProvider;
 	private final UserRepository userRepository;
+	private final UserSessionService userSessionService;
 	
 	
 	
@@ -49,6 +48,9 @@ public class AuthController {
 	                .orElseThrow(() -> new Exception("Utilisateur non trouvé"));
 
 	        user.setToken(userAuthProvider.createToken(user));
+	        UserSession userSession = new UserSession(user, LocalDateTime.now());
+	        userSessionService.createSession(userSession);
+	        
 	        return ResponseEntity.ok(user);
 	    } catch (Exception e) {
 	        return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Utilisateur non trouvé");

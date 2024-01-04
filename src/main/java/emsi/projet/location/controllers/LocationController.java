@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -34,5 +35,11 @@ public class LocationController {
 		Location l = locationService.createLocation(location);
 		return new ResponseEntity<>(l, HttpStatus.CREATED);
 	}
+	@DeleteMapping("/delete/{id}")
+	public ResponseEntity<Void> supprimerLocation(@RequestBody int id){
+		locationService.deleteByid(id);
+		return ResponseEntity.noContent().build();
+	}
+	
 	
 }
