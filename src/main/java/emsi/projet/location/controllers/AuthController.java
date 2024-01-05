@@ -86,11 +86,17 @@ public class AuthController {
 	}
 	
 	@Transactional
-    @DeleteMapping("/logout")
-    public String logout() {
-    	userSessionService.supprimerSession();
-        return "All user IDs deleted successfully";
-    }
+    @DeleteMapping("/logoutSession")
+	public ResponseEntity<String> logout() {
+	    try {
+	        userSessionService.supprimerSession();
+	        return new ResponseEntity<>("All user IDs deleted successfully", HttpStatus.OK);
+	    } catch (Exception e) {
+	        // Log the exception or handle it as needed
+	        e.printStackTrace();
+	        return new ResponseEntity<>("Error deleting user sessions", HttpStatus.INTERNAL_SERVER_ERROR);
+	    }
+	}
 	
 
 }

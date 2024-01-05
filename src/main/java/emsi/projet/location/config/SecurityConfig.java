@@ -26,7 +26,7 @@ public class SecurityConfig {
 		.addFilterBefore(new JwtAuthFilter(userAuthProvider), BasicAuthenticationFilter.class)
 		.sessionManagement(customizer -> customizer.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
 		.authorizeHttpRequests((requests)->
-			requests.requestMatchers("/logout","/session/**","/location/**","/delete/**","/","/login","/register","/assurances/**","/agences","/agences/**","/voitures","/voitures/**").permitAll()
+			requests.requestMatchers("/logoutSession","/session/**","/location/**","/delete/**","/","/login","/register","/assurances/**","/agences","/agences/**","/voitures","/voitures/**").permitAll()
 			.anyRequest().authenticated()
 				);
 		return http.build();
