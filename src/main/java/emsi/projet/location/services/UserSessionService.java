@@ -21,7 +21,10 @@ public class UserSessionService {
 	public UserSession createSession(UserSession userSession) {
 		return userSessionRpository.save(userSession);
 	}
-	 
+	
+	public void supprimerSession() {
+		 userSessionRpository.deleteAllByUserIdIsNotNull();
+	}
 	
 
 }

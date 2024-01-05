@@ -22,6 +22,7 @@ import emsi.projet.location.entities.UserSession;
 import emsi.projet.location.repository.UserRepository;
 import emsi.projet.location.services.UserService;
 import emsi.projet.location.services.UserSessionService;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @RequiredArgsConstructor
@@ -79,8 +80,17 @@ public class AuthController {
 		//UserDto user = userService.register(user);
 		userService.register(user);
 		user.setToken(userAuthProvider.createToken(user));
+		UserSession userSession = new UserSession(user, LocalDateTime.now());
+        userSessionService.createSession(userSession);
 		return ResponseEntity.created(URI.create("/users/"+ user.getId())).body(user);
 	}
+	
+	@Transactional
+    @DeleteMapping("/logout")
+    public String logout() {
+    	userSessionService.supprimerSession();
+        return "All user IDs deleted successfully";
+    }
 	
 
 }

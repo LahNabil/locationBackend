@@ -43,19 +43,19 @@ public class VoitureService {
 	    }
 	    */
 	
-	    public Voiture createVoiture(@RequestBody Voiture voiture) {
-	    	Optional<Assurance> assurance = assuranceRepository.findById(voiture.getAssurance().getId());
-	    	if(assurance.isEmpty()) {
-	    		throw new RuntimeException("Assurance not found.");
-	    	}
-	    	Optional<Agence> agence = agenceRepository.findById(voiture.getAgence().getId());
-	    	if(agence.isEmpty()) {
-	    		throw new RuntimeException("Agence not FOund");
-	    	}
-	    	voiture.setAgence(agence.get());
-	    	voiture.setAssurance(assurance.get());
-	    	
-	        return voitureRepository.save(voiture);
-	        
-	    }
+		public Voiture createVoiture(@RequestBody Voiture voiture) {
+			Optional<Assurance> assurance = assuranceRepository.findById(voiture.getAssurance().getId());
+			if(assurance.isEmpty()) {
+				throw new RuntimeException("Assurance not found.");
+			}
+			Optional<Agence> agence = agenceRepository.findById(voiture.getAgence().getId());
+			if(agence.isEmpty()) {
+				throw new RuntimeException("Agence not FOund");
+			}
+			voiture.setAgence(agence.get());
+			voiture.setAssurance(assurance.get());
+    	
+			return voitureRepository.save(voiture);
+        
+    }
 }
