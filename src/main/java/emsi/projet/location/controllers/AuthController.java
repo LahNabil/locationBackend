@@ -98,5 +98,11 @@ public class AuthController {
 	    }
 	}
 	
+	@GetMapping("/username")
+	public ResponseEntity<String> getUsernameBySession(){
+		String lastname = userSessionService.getUsernameBySessionId();
+		return new ResponseEntity<String>(lastname,HttpStatus.OK);
+	}
+	
 
 }
