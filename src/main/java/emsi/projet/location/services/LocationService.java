@@ -25,6 +25,10 @@ public class LocationService {
 	@Autowired
 	private UserRepository userRepository;
 	
+	public long nombreLocation() {
+		return this.locationRepository.countTotalLocation();
+	}
+	
 	 
 	    public Location createLocation(Location location) {
 	    	Optional<Voiture> voiture = voitureRepository.findById(location.getVoiture().getId());

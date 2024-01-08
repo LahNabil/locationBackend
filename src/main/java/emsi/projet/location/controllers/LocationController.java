@@ -40,6 +40,12 @@ public class LocationController {
 		locationService.deleteByid(id);
 		return ResponseEntity.noContent().build();
 	}
+	@GetMapping("sumlocations")
+	public ResponseEntity<Long>getNombreLocation(){
+		long num = this.locationService.nombreLocation();
+		return new ResponseEntity<>(num, HttpStatus.OK);
+	}
+
 	
 	
 }

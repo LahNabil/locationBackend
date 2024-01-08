@@ -26,6 +26,10 @@ public class UserService {
 		@Autowired
 	    private final PasswordEncoder passwordEncoder;
 		
+		public long nombreUsers() {
+			return this.userRepository.countTotalUser();
+		}
+		
 		
 
 		//public User login(String login, String password) {

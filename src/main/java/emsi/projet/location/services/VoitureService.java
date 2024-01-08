@@ -25,6 +25,10 @@ public class VoitureService {
 	@Autowired
 	private AgenceRepository agenceRepository;
 	
+	public long nombreVoiture() {
+		return this.voitureRepository.countTotalCars();
+	}
+	
 	 /*@PostMapping("/add")
 	    public ResponseEntity<Voiture> createVoiture(@RequestBody Voiture voiture) {
 	    	Optional<Assurance> assurance = assuranceRepository.findById(voiture.getAssurance().getId());

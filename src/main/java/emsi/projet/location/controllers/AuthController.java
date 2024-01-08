@@ -65,6 +65,12 @@ public class AuthController {
 	        
 	            
 	}
+	
+	@GetMapping("sumusers")
+	public ResponseEntity<Long>getNombreUser(){
+		long num = this.userService.nombreUsers();
+		return new ResponseEntity<>(num, HttpStatus.OK);
+	}
 
 	
 	

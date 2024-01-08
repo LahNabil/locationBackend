@@ -46,6 +46,12 @@ public class VoitureController {
         List<Voiture> voitures = voitureRepository.findAll();
         return new ResponseEntity<>(voitures, HttpStatus.OK);
     }
+	
+	@GetMapping("sumvoitures")
+	public ResponseEntity<Long>getNombreVoiture(){
+		long num = this.voitureService.nombreVoiture();
+		return new ResponseEntity<>(num, HttpStatus.OK);
+	}
 
     @GetMapping("/{id}")
     public ResponseEntity<Voiture> getVoitureById(@PathVariable int id) {
