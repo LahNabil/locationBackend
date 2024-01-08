@@ -9,8 +9,10 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import emsi.projet.location.entities.Location;
@@ -45,6 +47,24 @@ public class LocationController {
 		long num = this.locationService.nombreLocation();
 		return new ResponseEntity<>(num, HttpStatus.OK);
 	}
+	
+	@PutMapping("/edit")
+	public ResponseEntity<Location> modifierLocation(@RequestParam int id, @RequestBody Location updatedLocation) {
+	    try {
+	        // Assuming you have a service method to update the location
+	        Location modifiedLocation = locationService.modifierLocation(id, updatedLocation);
+
+	        if (modifiedLocation != null) {
+	            return ResponseEntity.ok(modifiedLocation);
+	        } else {
+	            return ResponseEntity.notFound().build();
+	        }
+	    } catch (Exception e) {
+	        // Handle exceptions or validation errors
+	        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+	    }
+	}
+
 
 	
 	
